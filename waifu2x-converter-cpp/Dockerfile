@@ -21,6 +21,7 @@ RUN git clone https://github.com/DeadSix27/waifu2x-converter-cpp.git . &&\
 
 #----------------------------------------
 FROM ubuntu:24.04
+LABEL org.opencontainers.image.source=https://github.com/cradle8810/dockerfile
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libopencv-dev \

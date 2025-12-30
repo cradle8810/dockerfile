@@ -33,9 +33,10 @@ WORKDIR /opt/bin
 COPY --from=builder /src/build/waifu2x-converter-cpp .
 COPY --from=builder /src/build/libw2xc.so .
 COPY --from=builder /src/models_rgb/* /usr/local/share/waifu2x-converter-cpp/
+COPY --chmod=755 ./run.sh /opt/bin/run.sh
+
 
 ENV LD_LIBRARY_PATH=/opt/bin
 
 WORKDIR /work
-ENTRYPOINT ["/opt/bin/waifu2x-converter-cpp"]
-CMD ["--help"]
+ENTRYPOINT ["/opt/bin/run.sh"]

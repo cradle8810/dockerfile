@@ -14,7 +14,7 @@ while [ "$#" -gt 0 ]; do
       exit 1
       ;;
     *)
-      INPUT_FILE="$1"
+      INPUT="$1"
       shift 1
       ;;
   esac
@@ -28,12 +28,6 @@ for cmd in ffmpeg MP4Box exiftool stat touch rm; do
     fi
 done
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <input_file>" >&2
-    exit 1
-fi
-
-INPUT="$1"
 DIRNAME=$(dirname "$INPUT")
 BASENAME=$(basename "$INPUT")
 BASENAME="${BASENAME%.*}"

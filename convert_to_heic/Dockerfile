@@ -9,12 +9,6 @@ RUN apt-get update && apt-get install -y \
     exiftool \
     && rm -rf /var/lib/apt/*
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libopencv-dev \
-    libgoogle-glog-dev \
-    ocl-icd-libopencl1 \
-    && rm -rf /var/lib/apt/*
-
 WORKDIR /opt/bin
 COPY --chmod=755 ./convert.sh /opt/bin/convert.sh
 

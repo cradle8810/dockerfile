@@ -46,7 +46,7 @@ TIMESTAMP=$(stat -c %y "$INPUT")
 
 # Step 1: Encode to Raw HEVC stream
 echo "  > Step 1: Encoding to HEVC stream..."
-ffmpeg -i "$INPUT" -c:v libx265 -crf "$CRF_QUALITY" -pix_fmt yuv420p -f hevc -y "$HVC_OUTPUT" 2>/dev/null
+ffmpeg -i "$INPUT" -c:v libx265 -crf "$CRF_QUALITY" -vf scale="trunc(iw/2)*2:trunc(ih/2)*2" -pix_fmt yuv420p -f hevc -y "$HVC_OUTPUT" 2>/dev/null
 
 if [ $? -ne 0 ]; then
     echo "  > Error: FFmpeg failed."

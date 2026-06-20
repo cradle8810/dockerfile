@@ -44,10 +44,13 @@ fi
 mkdir -p "$HEIC_DIR"
 TIMESTAMP=$(stat -c %y "$INPUT")
 
+eval $(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of default=nw=1:nk=0 "$INPUT")
+W=$(( (width / 2) * 2 ))
+H=$(( (height / 2) * 2 ))
+
 # Step 1: Encode to Raw HEVC stream
 echo "  > Step 1: Encoding to HEVC stream..."
-ffmpeg -i "$INPUT" -c:v libx265 -crf "$CRF_QUALITY" -vf scale="trunc(iw/2)*2:trunc(ih/2)*2" -pix_fmt yuv420p -f hevc -y "$HVC_OUTPUT" 2>/dev/null
-
+ffmpeg -i "$INPUT" -c:v libx265 -crf "$CRF_QUALITY" -vf "scale=$W:$H,setsar=1" -x265-params "w=${W}:h=${H}:no-info=1" -pix_fmt yuv420p -f hevc -y "$HVC_OUTPUT" 2>/dev/null
 if [ $? -ne 0 ]; then
     echo "  > Error: FFmpeg failed."
     rm -f "$HVC_OUTPUT"
@@ -56,7 +59,6 @@ fi
 
 # Step 2: Wrap into HEIF (Using a safer syntax for latest MP4Box/GPAC)
 echo "  > Step 2: Wrapping into HEIF container..."
-
 MP4Box -add-image "${HVC_OUTPUT}":primary -new \
     -ab heic -ab mif1 -ab iso8 -ab imfe \
     "$HEIC_OUTPUT" 2>/dev/null

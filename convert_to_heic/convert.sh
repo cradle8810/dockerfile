@@ -78,7 +78,7 @@ fi
 # Step 3: Metadata and Timestamp
 echo "  > Step 3: Copying metadata and timestamp..."
 exiftool -tagsFromFile "$INPUT" -all:all --icc_profile -overwrite_original "$HEIC_OUTPUT" 2>/dev/null
-touch -d "$TIMESTAMP" "$HEIC_OUTPUT"
+touch -r "$INPUT" "$HEIC_OUTPUT"
 
 rm -f "$HVC_OUTPUT"
 echo "  > Successfully converted to $HEIC_OUTPUT"
